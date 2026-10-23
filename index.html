@@ -102,6 +102,7 @@ html{-webkit-text-size-adjust:100%}img,canvas{max-width:100%}
     <div class="steps"><span id="st1">১ গাড়ি</span><span id="st2">২ রেজিষ্ট্রেশন</span></div>
     <div class="dl">
       <button class="btn" id="jpg" disabled>JPG ডাউনলোড (300 DPI)</button>
+      <small id="hint" style="color:var(--red);display:none">ডাউনলোড চালু করতে আগে গাড়ির ধরন (মোটরসাইকেল/স্কুটার) বাছুন ও রেজিষ্ট্রেশন নাম্বার লিখুন।</small>
       <div>
         <div class="lbl" style="font-weight:600;margin:6px 0">A4 প্রিন্ট শিট (আসল মাপ)</div>
         <div class="copies" id="copies"></div>
@@ -178,7 +179,7 @@ function render(){
   var L=lines(reg.value),n=Math.max(L.length,1);
   $('s2').textContent=ready()?bn(Math.min(h*.5/ n*1.0,h*.58),1)+' মিমি ✓':'—';
   $('s3').textContent=Math.round(w*px)+' × '+Math.round(h*px)+' px';
-  var a=ready();$('jpg').disabled=!a;$('pdf').disabled=!a;
+  var a=ready();$('jpg').disabled=!a;$('pdf').disabled=!a;$('hint').style.display=a?'none':'block';
   $('st1').className=st.v?'ok':'';$('st2').className=reg.value.trim()?'ok':'';
   $('st1').textContent=(st.v?'✓ ':'')+'১ গাড়ি';$('st2').textContent=(reg.value.trim()?'✓ ':'')+'২ রেজিষ্ট্রেশন';
   var max=v==='scooter'?2:3;if(st.copies>max)st.copies=max;
@@ -186,14 +187,14 @@ function render(){
   for(var i=1;i<=max;i++){(function(i){var b=document.createElement('button');b.type='button';b.textContent=bn(i)+' কপি';b.setAttribute('aria-pressed',st.copies===i);b.onclick=function(){st.copies=i;render()};cp.appendChild(b)})(i)}
 }
 function full(){var c=document.createElement('canvas');draw(c,300/25.4);return c}
-function save(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)}
+function save(blob,name){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();if(!('download' in a)||/FBAN|FBAV|FB_IAB|Instagram|Messenger|Line\/|; wv\)/i.test(navigator.userAgent)){window.open(u,'_blank');alert('ডাউনলোড না হলে খোলা ছবি/ফাইলটি চেপে ধরে সেভ করুন, অথবা Chrome ব্রাউজারে পেজটি খুলুন।')}setTimeout(function(){URL.revokeObjectURL(u)},60000)}
 $('jpg').onclick=function(){full().toBlob(function(b){save(b,'number-plate-'+st.v+'.jpg')},'image/jpeg',0.95)};
 $('pdf').onclick=function(){
   var J=window.jspdf.jsPDF,m=st.v==='moto',pdf=new J({orientation:m?'landscape':'portrait',unit:'mm',format:'a4'});
   var img=full().toDataURL('image/jpeg',0.95),w=SIZE[st.v][0],h=SIZE[st.v][1],pw=m?297:210,ph=m?210:297,g=m?8:6;
   var tot=st.copies*h+(st.copies-1)*g,y=(ph-tot)/2,x=(pw-w)/2;
   for(var i=0;i<st.copies;i++){pdf.addImage(img,'JPEG',x,y+i*(h+g),w,h)}
-  pdf.save('number-plate-'+st.v+'-a4.pdf');
+  save(pdf.output('blob'),'number-plate-'+st.v+'-a4.pdf');
 };
 document.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){
   st.v=b.dataset.v;document.querySelectorAll('.seg button').forEach(function(o){o.setAttribute('aria-pressed',o===b)});render()}});
