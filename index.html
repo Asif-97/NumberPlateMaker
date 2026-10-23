@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>প্লেট স্টুডিও | Plate Studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Poppins:wght@600;700;800&family=Noto+Sans+Bengali:wght@700&family=Hind+Siliguri:wght@700&family=Anek+Bangla:wght@700&family=Baloo+Da+2:wght@700&family=Mukta:wght@700&family=Noto+Serif+Bengali:wght@700&family=Galada&family=Atma:wght@700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--page:linear-gradient(135deg,#d2f7e3 0%,#f5fbf8 45%,#e5e8ff 100%);--glass:rgba(255,255,255,.78);--bg:#eef3ef;--surface:#fff;--ink:#12201a;--muted:#5a6b62;--line:#d5e0d9;--green:#006a4e;--green-d:#004d38;--red:#f42a41;--disabled:#c3cfc8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:linear-gradient(135deg,#0b1a14 0%,#0e1620 55%,#1a1016 100%);--glass:rgba(21,33,27,.78);--bg:#0d1612;--surface:#15211b;--ink:#e9f2ed;--muted:#93a69b;--line:#27382f;--green:#27b88c;--green-d:#1e9a74;--disabled:#2c3b33}}
+:root[data-theme="dark"]{--page:linear-gradient(135deg,#0b1a14 0%,#0e1620 55%,#1a1016 100%);--glass:rgba(21,33,27,.78);--bg:#0d1612;--surface:#15211b;--ink:#e9f2ed;--muted:#93a69b;--line:#27382f;--green:#27b88c;--green-d:#1e9a74;--disabled:#2c3b33}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--page) fixed,var(--bg);color:var(--ink);font-family:"Tiro Bangla",system-ui,sans-serif;overflow-x:hidden;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 48px}
+.font-display,header h1,.card h2,.btn,.badge,.cta{font-family:'Poppins','Tiro Bangla',sans-serif}
+header{padding:clamp(20px,5vw,48px) 4px clamp(8px,2vw,16px)}
+.badge{display:inline-block;padding:4px 16px;border-radius:999px;border:1px solid #bfe9d2;background:rgba(255,255,255,.7);color:var(--green);font-weight:700;font-size:.82rem}
+.cta{display:inline-block;margin-top:20px;padding:13px 28px;border-radius:999px;background:linear-gradient(110deg,#0b8a5a,#4a45c9);color:#fff;font-weight:700;text-decoration:none;box-shadow:0 8px 20px rgba(60,80,200,.25)}
+header h1{margin:14px 0 0;font-size:clamp(1.7rem,4.6vw,2.9rem);font-weight:700;line-height:1.3;letter-spacing:-.01em;max-width:760px}
+header p{margin:12px 0 0;color:var(--muted);font-size:clamp(1rem,2.4vw,1.2rem);max-width:600px}
+main{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px;margin-top:16px;align-items:start}
+@media(max-width:820px){main{grid-template-columns:1fr}header h1{max-width:100%}header::after{width:110px;height:110px}}
+.card{background:var(--glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:22px;padding:clamp(16px,3vw,24px);box-shadow:0 10px 30px rgba(0,106,78,.08)}
+.card h2{margin:0 0 14px;font-size:1.1rem}
+.field{margin-bottom:18px}
+.field>label,.field>.lbl{display:block;font-weight:600;margin-bottom:6px}
+.field small{display:block;color:var(--muted);margin-top:5px;font-size:.85rem}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{font:inherit;padding:12px 8px;border-radius:12px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font-weight:600}
+.seg button[aria-pressed="true"]{border-color:var(--green);background:var(--green);color:#fff}
+input[type=text],textarea{width:100%;font:inherit;font-size:1.15rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+textarea{resize:vertical;min-height:84px}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+input:focus,textarea:focus{border-color:var(--green)}
+.fonts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fonts button{font:inherit;padding:10px 8px;border-radius:12px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;text-align:center;line-height:1.3}
+.fonts button .fs{display:block;font-size:1.25rem}
+.fonts button .fn{display:block;font-family:'Poppins',sans-serif;font-size:.7rem;color:var(--muted);margin-top:2px}
+.fonts button[aria-pressed="true"]{border-color:var(--green);background:rgba(0,106,78,.1);box-shadow:0 0 0 2px var(--green) inset}
+.row{display:flex;align-items:center;gap:10px}
+.row input[type=checkbox]{width:20px;height:20px;accent-color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.rng{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem}
+.stage{background:repeating-linear-gradient(45deg,var(--bg),var(--bg) 10px,var(--surface) 10px,var(--surface) 20px);border-radius:12px;padding:20px 12px;display:flex;justify-content:center;border:1px dashed var(--line)}
+.stage canvas{max-width:100%;height:auto;box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stats div{background:var(--bg);border-radius:10px;padding:10px;font-size:.82rem;color:var(--muted)}
+.stats b{display:block;color:var(--ink);font-size:.98rem}
+.steps{display:flex;gap:14px;margin:16px 0 4px;font-size:.9rem;color:var(--muted)}
+.steps span.ok{color:var(--green);font-weight:600}
+.btn{font:inherit;font-weight:700;border:0;border-radius:14px;padding:14px 18px;background:linear-gradient(110deg,#0b8a5a,#4a45c9);box-shadow:0 6px 16px rgba(60,80,200,.22);color:#fff;cursor:pointer;width:100%}
+.btn:hover:not(:disabled){background:var(--green-d)}
+.btn:disabled{background:var(--disabled);color:var(--muted);cursor:not-allowed}
+.btn.alt{background:linear-gradient(120deg,#1f3a2f,#2b5a47);color:#fff}
+.dl{display:grid;gap:10px;margin-top:12px}
+.copies{display:flex;gap:8px;margin-bottom:2px}
+.copies button{flex:1;font:inherit;padding:9px;border-radius:10px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font-weight:600}
+.copies button[aria-pressed="true"]{border-color:var(--red);color:var(--red)}
+.ad{margin-top:16px;border-radius:16px;background:var(--red);color:#fff;padding:18px 20px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.ad a{background:#fff;color:var(--red);padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
+footer{margin-top:18px;color:var(--muted);font-size:.85rem;text-align:center}
+footer a{color:var(--green)}
+.dev{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:.95rem;color:var(--ink)}
+html{-webkit-text-size-adjust:100%}img,canvas{max-width:100%}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{padding:12px 12px 36px}header h1{font-size:1.6rem}header p{font-size:.9rem}.stats{grid-template-columns:1fr 1fr}.stats div:last-child{grid-column:1/-1}.stage{padding:14px 6px}.ad{flex-direction:column;align-items:flex-start}.ad a{width:100%;text-align:center}.steps{flex-wrap:wrap;gap:8px 14px}.btn,.seg button,.copies button{min-height:48px}}
+@media(min-width:1400px){.wrap{max-width:1180px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="badge">মোটরসাইকেল ও স্কুটার</span>
+  <h1 class="font-display">নিখুঁত মাপে আপনার গাড়ির নম্বর প্লেট তৈরি করুন!</h1>
+  <p>রেজিষ্ট্রেশন নাম্বার লিখুন, প্রিভিউ দেখুন, তারপর আসল মাপে ডাউনলোড করুন।</p>
+  <a class="cta" href="#form">শুরু করুন</a>
+</header>
+<main id="form">
+  <section class="card" aria-label="তথ্য দিন">
+    <h2>তথ্য দিন / Enter details</h2>
+    <div class="field"><span class="lbl">যানবাহনের ধরন / Vehicle type</span>
+      <div class="seg"><button type="button" data-v="moto" aria-pressed="false">মোটরসাইকেল<br><small>Motorcycle</small></button><button type="button" data-v="scooter" aria-pressed="false">স্কুটার<br><small>Scooter</small></button></div>
+    </div>
+    <div class="field"><label for="reg">রেজিষ্ট্রেশন নাম্বার / Registration number</label>
+      <textarea id="reg" placeholder="ঢাকা মেট্রো-হ ১২-৩৪৫৬" rows="2"></textarea>
+      <small>আপনার লেখা হুবহু প্লেটে দেখাবে। স্কুটারে নতুন লাইনে লিখলে দুই লাইনে আসবে। / Shown exactly as typed.</small></div>
+    <div class="field"><span class="lbl">ফন্ট নির্বাচন করুন / Choose font</span>
+      <div class="fonts" id="fonts" role="group" aria-label="ফন্ট"></div>
+      <small>পছন্দের ফন্টে ক্লিক করুন, প্রিভিউ ও ডাউনলোড সেই ফন্টেই হবে। / Preview and download use the selected font.</small></div>
+    <div class="field"><div class="row"><input type="checkbox" id="fr" checked><label for="fr" style="margin:0;font-weight:600">প্লেটে কালো ফ্রেম দিবেন? / Add black frame</label></div></div>
+    <div class="field" id="thickBox"><label for="th">ফ্রেমের পুরুত্ব / Frame thickness: <b id="thv"></b></label>
+      <input type="range" id="th" min="0.5" max="4" step="0.5" value="1.5"><div class="rng"><span>পাতলা 0.5 মিমি</span><span>মোটা 4 মিমি</span></div></div>
+  </section>
+
+  <section class="card" aria-label="প্রিভিউ">
+    <h2>নম্বর প্লেট প্রিভিউ / Plate preview</h2>
+    <div class="stage"><canvas id="cv" role="img" aria-label="নম্বর প্লেট প্রিভিউ"></canvas></div>
+    <div class="stats"><div>প্লেটের মাপ<b id="s1"></b></div><div>লেখার উচ্চতা<b id="s2"></b></div><div>রেজোলিউশন<b id="s3"></b></div></div>
+    <div class="steps"><span id="st1">১ গাড়ি</span><span id="st2">২ রেজিষ্ট্রেশন</span></div>
+    <div class="dl">
+      <button class="btn" id="jpg" disabled>JPG ডাউনলোড (300 DPI)</button>
+      <div>
+        <div class="lbl" style="font-weight:600;margin:6px 0">A4 প্রিন্ট শিট (আসল মাপ)</div>
+        <div class="copies" id="copies"></div>
+        <button class="btn alt" id="pdf" disabled style="margin-top:8px">A4 PDF ডাউনলোড</button>
+        <small style="color:var(--muted);display:block;margin-top:6px">একটি A4 পাতায় মোটরসাইকেলের সর্বোচ্চ ৩টি, স্কুটারের সর্বোচ্চ ২টি প্লেট। প্রিন্টে ১০০% মাপ রাখুন।</small>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>প্লেটের মাপ: মোটরসাইকেল ২৮৫×৫০ মিমি, স্কুটার ২০০×১০০ মিমি। ফাইল ৩০০ DPI-তে আসল মাপে তৈরি হয়।<br><a href="https://www.facebook.com/share/1A2xCpxT6R/">Any help? Contact me</a><p class="dev">Developed by <b>Asif Sarkar</b></p></footer>
+</div>
+<script>
+(function(){
+var SIZE={moto:[285,50],scooter:[200,100]},FONTS=[
+ {n:'Noto Sans Bengali',w:700,l:'নোটো সান্স'},
+ {n:'Hind Siliguri',w:700,l:'হিন্দ শিলিগুড়ি'},
+ {n:'Anek Bangla',w:700,l:'অনেক বাংলা'},
+ {n:'Baloo Da 2',w:700,l:'বালু দা ২'},
+ {n:'Mukta',w:700,l:'মুক্তা'},
+ {n:'Noto Serif Bengali',w:700,l:'নোটো সেরিফ'},
+ {n:'Tiro Bangla',w:400,l:'তিরো বাংলা'},
+ {n:'Atma',w:700,l:'আত্মা'},
+ {n:'Galada',w:400,l:'গালাদা'}
+];
+function F(size){var f=FONTS[st.font];return f.w+' '+size+'px "'+f.n+'",sans-serif'}
+var st={v:null,copies:1,font:0},$=function(i){return document.getElementById(i)};
+var cv=$('cv'),reg=$('reg'),fr=$('fr'),th=$('th');
+var bn=function(n,d){return Number(n).toLocaleString('bn-BD',{minimumFractionDigits:d||0,maximumFractionDigits:d||0,useGrouping:false})};
+
+function lines(txt){
+  var t=txt.replace(/\s+$/,'');if(!t)return [];
+  if(st.v==='scooter'){
+    if(t.indexOf('\n')>-1)return t.split('\n').map(function(s){return s.trim()}).filter(Boolean).slice(0,2);
+    var i=t.lastIndexOf(' ');return i>0?[t.slice(0,i).trim(),t.slice(i+1).trim()]:[t];
+  }
+  return [t.replace(/\s*\n\s*/g,' ')];
+}
+function draw(c,ppm){
+  var v=st.v||'moto',w=SIZE[v][0],h=SIZE[v][1],W=Math.round(w*ppm),H=Math.round(h*ppm);
+  c.width=W;c.height=H;var x=c.getContext('2d');
+  x.fillStyle='#fff';x.fillRect(0,0,W,H);
+  var fm=fr.checked?parseFloat(th.value)*ppm:0;
+  if(fm){x.strokeStyle='#000';x.lineWidth=fm;x.strokeRect(fm/2,fm/2,W-fm,H-fm)}
+  var L=lines(reg.value),usedH=0;
+  if(!L.length){x.fillStyle='#b9c4be';x.font=F(H*.5);x.textAlign='center';x.textBaseline='middle';x.fillText('নমুনা / Sample',W/2,H/2);return 0}
+  var pad=(fm+3*ppm),aw=W-2*pad,ah=H-2*pad,n=L.length;
+  var fs=Math.min(ah/n/1.15,H*.58);
+  x.font=F(fs);
+  var mw=Math.max.apply(null,L.map(function(s){return x.measureText(s).width}));
+  if(mw>aw)fs*=aw/mw;
+  x.font=F(fs);x.fillStyle='#000';x.textAlign='center';x.textBaseline='middle';
+  var lh=fs*1.12,y0=H/2-lh*(n-1)/2;
+  L.forEach(function(s,i){x.fillText(s,W/2,y0+i*lh+fs*.04)});
+  return fs*0.5/ppm*2*0.58*1.0;
+}
+function buildFonts(){
+  var box=$('fonts');box.innerHTML='';
+  FONTS.forEach(function(f,i){
+    var b=document.createElement('button');b.type='button';
+    b.setAttribute('aria-pressed',st.font===i);
+    b.innerHTML='<span class="fs" style="font-family:\''+f.n+'\',sans-serif;font-weight:'+f.w+'">ঢাকা মেট্রো ১২-৩৪৫৬</span><span class="fn">'+f.l+' · '+f.n+'</span>';
+    b.onclick=function(){st.font=i;buildFonts();loadF();render()};
+    box.appendChild(b);
+  });
+}
+function loadF(){var f=FONTS[st.font];if(document.fonts&&document.fonts.load){document.fonts.load(f.w+' 40px "'+f.n+'"','নম্বর ১২৩ ঢাকা').then(render).catch(function(){})}}
+function ready(){return !!st.v&&reg.value.trim().length>0}
+function render(){
+  var v=st.v||'moto',w=SIZE[v][0],h=SIZE[v][1],px=300/25.4;
+  var th2=draw(cv,Math.min(1200/w,6));
+  $('thv').textContent=bn(th.value,1)+' মিমি';
+  $('thickBox').style.display=fr.checked?'':'none';
+  $('s1').textContent=bn(w)+' × '+bn(h)+' মিমি';
+  var L=lines(reg.value),n=Math.max(L.length,1);
+  $('s2').textContent=ready()?bn(Math.min(h*.5/ n*1.0,h*.58),1)+' মিমি ✓':'—';
+  $('s3').textContent=Math.round(w*px)+' × '+Math.round(h*px)+' px';
+  var a=ready();$('jpg').disabled=!a;$('pdf').disabled=!a;
+  $('st1').className=st.v?'ok':'';$('st2').className=reg.value.trim()?'ok':'';
+  $('st1').textContent=(st.v?'✓ ':'')+'১ গাড়ি';$('st2').textContent=(reg.value.trim()?'✓ ':'')+'২ রেজিষ্ট্রেশন';
+  var max=v==='scooter'?2:3;if(st.copies>max)st.copies=max;
+  var cp=$('copies');cp.innerHTML='';
+  for(var i=1;i<=max;i++){(function(i){var b=document.createElement('button');b.type='button';b.textContent=bn(i)+' কপি';b.setAttribute('aria-pressed',st.copies===i);b.onclick=function(){st.copies=i;render()};cp.appendChild(b)})(i)}
+}
+function full(){var c=document.createElement('canvas');draw(c,300/25.4);return c}
+function save(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)}
+$('jpg').onclick=function(){full().toBlob(function(b){save(b,'number-plate-'+st.v+'.jpg')},'image/jpeg',0.95)};
+$('pdf').onclick=function(){
+  var J=window.jspdf.jsPDF,m=st.v==='moto',pdf=new J({orientation:m?'landscape':'portrait',unit:'mm',format:'a4'});
+  var img=full().toDataURL('image/jpeg',0.95),w=SIZE[st.v][0],h=SIZE[st.v][1],pw=m?297:210,ph=m?210:297,g=m?8:6;
+  var tot=st.copies*h+(st.copies-1)*g,y=(ph-tot)/2,x=(pw-w)/2;
+  for(var i=0;i<st.copies;i++){pdf.addImage(img,'JPEG',x,y+i*(h+g),w,h)}
+  pdf.save('number-plate-'+st.v+'-a4.pdf');
+};
+document.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){
+  st.v=b.dataset.v;document.querySelectorAll('.seg button').forEach(function(o){o.setAttribute('aria-pressed',o===b)});render()}});
+[reg,fr,th].forEach(function(e){e.addEventListener('input',render)});
+buildFonts();render();loadF();
+})();
+</script>
+</body>
+</html>
